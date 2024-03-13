@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SubtitleGenerator"
+        xmlns:converters="clr-namespace:SubtitleGenerator.Models.Converters"
         xmlns:viewModel="clr-namespace:SubtitleGenerator.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <converters:TruncateConverter x:Key="TruncateConverter" />
+    </Window.Resources>
     <Window.DataContext>
         <viewModel:MainViewModel />
     </Window.DataContext>
@@ -24,9 +28,11 @@
 
         <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="Subtitle Generator" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" />
 
-        <TextBox Style="{StaticResource DefaultTextBoxStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="SubtitleText" Height="200" Margin="10" Padding="4" Text="{Binding CurrentEntry.Subtitle, Mode=TwoWay}"></TextBox>
-        <TextBox Style="{StaticResource TimeEntryTextBoxStyle}" Grid.Row="1" Grid.Column="0" x:Name="Start" Padding="4" Margin="10,220,10,0" Text="{Binding CurrentEntry.Start, StringFormat={}{0:hh\\:mm\\:ss\\.fff}, Mode=TwoWay}"></TextBox>
-        <TextBox Style="{StaticResource TimeEntryTextBoxStyle}" Grid.Row="1" Grid.Column="1" x:Name="End" Padding="4" Margin="10,220,10,0" Text="{Binding CurrentEntry.End, StringFormat={}{0:hh\\:mm\\:ss\\.fff}, Mode=TwoWay}"></TextBox>
+        <TextBox Style="{StaticResource DefaultTextBoxStyle}" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" x:Name="SubtitleText" Height="200" Margin="10" Padding="4" Text="{Binding CurrentEntry.Subtitle, Mode=TwoWay}" KeyUp="SubtitleText_KeyUp" />
+        <TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="10,215,10,0" x:Name="SubtitleStatus" Text="All good (0/64)" VerticalAlignment="Top" />
+        
+        <TextBox Style="{StaticResource TimeEntryTextBoxStyle}" Grid.Row="1" Grid.Column="0" x:Name="Start" Padding="4" Margin="10,240,10,0" Text="{Binding CurrentEntry.Start, StringFormat={}{0:hh\\:mm\\:ss\\.fff}, Mode=TwoWay}" />
+        <TextBox Style="{StaticResource TimeEntryTextBoxStyle}" Grid.Row="1" Grid.Column="1" x:Name="End" Padding="4" Margin="10,240,10,0" Text="{Binding CurrentEntry.End, StringFormat={}{0:hh\\:mm\\:ss\\.fff}, Mode=TwoWay}" />
 
         <ListView x:Name="SubtitleList" Grid.Row="1" Grid.Column="3" Margin="10" ItemsSource="{Binding Entries}">
             <ListView.ItemTemplate>
@@ -37,7 +43,7 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Subtitle}" />
+                        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Text="{Binding Subtitle, Converter={StaticResource TruncateConverter}, ConverterParameter=50}" TextTrimming="CharacterEllipsis" TextWrapping="Wrap" />
 
                         <TextBlock Grid.Row="1" FontSize="10">
                             <Run Text="{Binding Start, StringFormat={}{0:hh\\:mm\\:ss\\.fff}}" />
@@ -55,6 +61,8 @@
         </ListView>
 
         <Button Grid.Column="0" Grid.Row="2" x:Name="Add" Content="Add" Margin="4" Click="Add_Click" />
+
+        <Button Grid.Column="2" Grid.Row="2" x:Name="ExportBtn" Content="Export" Margin="4" Click="ExportBtn_Click" />
 
     </Grid>
 </Window>

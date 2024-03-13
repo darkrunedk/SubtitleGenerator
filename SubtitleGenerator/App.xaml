@@ -4,6 +4,9 @@
              xmlns:local="clr-namespace:SubtitleGenerator"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <SolidColorBrush x:Key="StatusDefaultColor" Color="Black" />
+        <SolidColorBrush x:Key="ErrorColor" Color="Red" />
+
         <Style x:Key="DefaultTextBoxStyle" TargetType="TextBox">
             <Setter Property="VerticalAlignment" Value="Top" />
         </Style>
