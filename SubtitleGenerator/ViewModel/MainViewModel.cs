@@ -7,7 +7,17 @@ namespace SubtitleGenerator.ViewModel
 {
     public class MainViewModel: INotifyPropertyChanged
     {
-        public ObservableCollection<SubtitleEntry> Entries { get; set; } = [];
+        private ObservableCollection<SubtitleEntry> _entries = [];
+
+        public ObservableCollection<SubtitleEntry> Entries
+        {
+            get { return _entries; }
+            set
+            {
+                _entries = value;
+                OnPropertyChanged();
+            }
+        }
 
         private SubtitleEntry _currentEntry = new();
 
